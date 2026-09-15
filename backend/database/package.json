@@ -1,0 +1,8 @@
+{
+  "name": "@wenza/database",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": { "validate": "prisma validate", "generate": "prisma generate", "migrate": "prisma migrate dev" },
+  "dependencies": { "@prisma/client": "^7.0.0", "dotenv": "^17.0.0" },
+  "devDependencies": { "prisma": "^7.0.0" }
+}

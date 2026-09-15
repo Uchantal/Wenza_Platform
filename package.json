@@ -1,0 +1,19 @@
+{
+  "name": "wenza-platform",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["frontend", "backend", "backend/database"],
+  "engines": { "node": ">=24 <25" },
+  "scripts": {
+    "dev:web": "npm run dev -w @wenza/web",
+    "dev:api": "npm run dev -w @wenza/api",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:validate": "npm run validate -w @wenza/database",
+    "db:generate": "npm run generate -w @wenza/database",
+    "db:migrate": "npm run migrate -w @wenza/database",
+    "infra:up": "docker compose -f scripts/docker/compose.yml up -d",
+    "infra:down": "docker compose -f scripts/docker/compose.yml down"
+  },
+  "devDependencies": { "typescript": "^5.9.3", "@types/node": "^24.0.0" }
+}

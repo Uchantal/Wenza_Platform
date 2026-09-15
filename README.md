@@ -1,0 +1,56 @@
+# Wenza
+
+A professional creator and organization marketplace, starting in Kenya.
+
+This repository implements the **project foundation**, based on `Wenza_StartUp_initial_proposal_UPDATED_v2.docx`. It is not a complete marketplace: authentication, verification workflows, campaigns, provider integrations and payments are still to be built.
+
+## Repository
+
+```text
+frontend/              Next.js + React web application
+backend/               NestJS modular monolith; REST API
+  src/modules/         Business areas and health endpoint
+  src/integrations/    External provider boundaries
+  src/jobs/            Background processing plan
+  database/            Prisma schema, client generation and migrations
+docs/
+  architecture/        Architecture decisions and original diagram
+  product/             MVP scope and development sequence
+scripts/
+  docker/              Local PostgreSQL and Redis
+```
+
+## Local development
+
+Use Node.js 24 and npm. Docker with Compose is required for the database and Redis.
+
+```powershell
+npm install
+Copy-Item backend/.env.example backend/.env
+Copy-Item backend/database/.env.example backend/database/.env
+npm run infra:up
+npm run db:validate
+npm run db:generate
+npm run db:migrate -- --name initial_identity
+```
+
+Run `npm run dev:web` and `npm run dev:api` in separate terminals. Open http://localhost:3000 and http://localhost:4000/api/v1/health.
+
+The web starter and API health endpoint run without infrastructure. Health currently checks process liveness only; it does not claim database or provider readiness. The API is not yet connected to Prisma. Generated client files are ignored; generate them locally. Commit reviewed migrations when the first schema is applied.
+
+```powershell
+npm run typecheck
+npm run db:validate
+npm run build
+```
+
+Production builds start with `npm run start -w @wenza/web` and `npm run start -w @wenza/api`. Hosting, application containers, secret management and deployment automation will be added after selecting a hosting target. `infra:down` stops local services without deleting data.
+
+## Project references
+
+- [Architecture and module boundaries](docs/architecture/README.md)
+- [Original architecture diagram](docs/architecture/proposal-architecture.png)
+- [MVP scope, unresolved decisions and delivery sequence](docs/product/mvp.md)
+- [Initial dependency audit and unresolved findings](docs/architecture/dependency-review.md)
+
+Never commit credentials or real creator data. Environment examples contain local development values only.
