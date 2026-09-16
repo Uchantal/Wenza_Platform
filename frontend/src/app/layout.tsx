@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Wenza | Creator business network',
-  description: 'Professional opportunities for African creators and verified organizations.',
+  title: 'Wenza | African Creators and Brands network',
+  description: 'Your Creativity serves the world and deserves recognition.',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
