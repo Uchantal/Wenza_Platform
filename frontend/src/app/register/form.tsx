@@ -37,9 +37,9 @@ export default function Form() {
       <label className={styles.hidden} htmlFor="full-name">Full name</label>
       <input id="full-name" name="fullName" autoComplete="name" placeholder="Full name" required maxLength={150} pattern=".*\S.*" aria-describedby="name-help" />
       <small id="name-help">Use your full name as shown on your identity documents for later identity and payment verification.</small>
-      <label className={styles.hidden} htmlFor="username">Social media username</label>
+      <label className={styles.hidden} htmlFor="username">Username</label>
       <input id="username" name="username" autoComplete="username" placeholder="Social media username" required maxLength={100} pattern="@?[^\s@]+" aria-describedby="username-help" />
-      <small id="username-help">Use the username from your main creator social media account.</small>
+      <small id="username-help"></small>
       <label className={styles.hidden} htmlFor="email">Email address</label>
       <input id="email" name="email" type="email" autoComplete="email" placeholder="Email address" required maxLength={254} />
       <Password />

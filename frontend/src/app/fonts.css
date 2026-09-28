@@ -1,0 +1,57 @@
+/* @font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/geist-400.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/fonts/geist-600.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/geist-700.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/geist-mono-400.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/geist-mono-500.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/fonts/geist-mono-600.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/inter-400.ttf) format('truetype');
+}
+
+@font-face { font-family: Dosis; src: url('/fonts/dosis-regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: Dosis; src: url('/fonts/dosis-semibold.ttf') format('truetype'); font-style: normal; font-weight: 500 800; font-display: swap; }
+@font-face { font-family: 'Core Mellow'; src: local('Core Mellow Regular'), local('CoreMellow-Regular'); font-style: normal; font-weight: 400; }
+@font-face { font-family: 'Core Mellow'; src: local('Core Mellow Medium'), local('CoreMellow-Medium'); font-style: normal; font-weight: 500 600; }
+@font-face { font-family: 'Core Mellow'; src: local('Core Mellow Bold'), local('CoreMellow-Bold'); font-style: normal; font-weight: 700; }
+
+:root { --font-display: 'Core Mellow', Dosis, sans-serif; font-family: Geist, Arial, Helvetica, sans-serif; } */

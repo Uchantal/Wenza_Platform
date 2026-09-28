@@ -46,7 +46,10 @@ export default function Nav() {
         <div className={styles.dropdown} ref={dropdown} onBlur={event => {
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpen(false);
         }}>
-          <button ref={trigger} className={styles.signIn} type="button" aria-expanded={open} aria-controls="sign-in-options" onClick={() => setOpen(!open)}>Sign in <span aria-hidden="true">⌄</span></button>
+          <div className={styles.signInGroup}>
+            <a className={styles.signIn} href="/login">Sign in</a>
+            <button ref={trigger} className={styles.dropdownToggle} type="button" aria-label="Sign in options" aria-expanded={open} aria-controls="sign-in-options" onClick={() => setOpen(value => !value)}><span aria-hidden="true">⌄</span></button>
+          </div>
           {open && <div className={styles.dropdownPanel} id="sign-in-options"><a href="/login" onClick={() => setOpen(false)}>Login<small>Already have an account?</small></a></div>}
         </div>
       </div>
