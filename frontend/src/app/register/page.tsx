@@ -15,7 +15,6 @@ export default function RegisterPage() {
       <section className={styles.register} aria-labelledby="register-title">
         <div className={styles.card}>
           <h1 id="register-title">Join the network</h1>
-          <p>Create your Wenza account.</p>
           <Form />
           <p className={styles.caption}>Already have an account? <a href="/login">Login</a></p>
         </div>

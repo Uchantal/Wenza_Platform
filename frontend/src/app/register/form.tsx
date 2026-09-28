@@ -1,7 +1,98 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import styles from './register.module.css';
+
+const industries = [
+  'Agriculture',
+  'Arts & Entertainment',
+  'Automotive',
+  'Beauty & Personal Care',
+  'Education',
+  'Energy & Environment',
+  'Fashion & Accessories',
+  'Finance & Insurance',
+  'Food & Beverages',
+  'Government & Public Services',
+  'Health & Wellness',
+  'Home & Living',
+  'Manufacturing',
+  'Marketing & Media',
+  'Nonprofit & Community',
+  'Professional Services',
+  'Real Estate & Construction',
+  'Retail & E-commerce',
+  'Sports & Fitness',
+  'Technology & Telecommunications',
+  'Transport & Logistics',
+  'Travel & Hospitality',
+  'Other',
+];
+
+const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+const countries = ('AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW').split(' ')
+  .map(code => ({ code, name: regionNames.of(code) ?? code }))
+  .sort((a, b) => a.name.localeCompare(b.name, 'en'));
+function Dropdown({ id, name, options, placeholder }: { id: string; name: string; options: { value: string; label: string }[]; placeholder: string }) {
+  const [value, setValue] = useState('');
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(0);
+  const root = useRef<HTMLDivElement>(null);
+  const button = useRef<HTMLButtonElement>(null);
+  const search = useRef({ text: '', time: 0 });
+  useEffect(() => {
+    if (!open) return;
+    const dismiss = (event: PointerEvent) => {
+      if (!root.current?.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [open]);
+  useEffect(() => {
+    if (open) document.getElementById(`${id}-option-${active}`)?.scrollIntoView({ block: 'nearest' });
+  }, [active, open, id]);
+  function choose(index: number) {
+    const option = options[index];
+    if (!option) return;
+    setValue(option.value);
+    setOpen(false);
+    button.current?.focus();
+  }
+  return <div className={styles.dropdown} ref={root} onBlur={event => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpen(false);
+  }}>
+    <input type="hidden" name={name} value={value} />
+    <button id={id} ref={button} type="button" role="combobox" aria-required="true" aria-expanded={open} aria-controls={`${id}-options`} aria-haspopup="listbox" aria-activedescendant={open ? `${id}-option-${active}` : undefined} className={styles.selectButton} onClick={() => {
+      setActive(Math.max(0, options.findIndex(option => option.value === value)));
+      setOpen(!open);
+    }} onKeyDown={event => {
+      if (event.key === 'Escape') { event.preventDefault(); setOpen(false); return; }
+      if (event.key === 'Tab') { setOpen(false); return; }
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        if (open) choose(active);
+        else { setActive(Math.max(0, options.findIndex(option => option.value === value))); setOpen(true); }
+        return;
+      }
+      if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+        event.preventDefault();
+        setOpen(true);
+        setActive(index => event.key === 'Home' ? 0 : event.key === 'End' ? options.length - 1 : Math.max(0, Math.min(options.length - 1, index + (event.key === 'ArrowDown' ? 1 : -1))));
+      } else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        const now = Date.now();
+        search.current.text = (now - search.current.time < 700 ? search.current.text : '') + event.key.toLowerCase();
+        search.current.time = now;
+        const index = options.findIndex(option => option.label.toLowerCase().startsWith(search.current.text));
+        if (index >= 0) { setActive(index); setOpen(true); }
+      }
+    }}>
+      <span>{options.find(option => option.value === value)?.label ?? placeholder}</span><span aria-hidden="true">⌄</span>
+    </button>
+    {open && <ul id={`${id}-options`} role="listbox" aria-label={id === 'country' ? 'Country' : 'Industry'} className={styles.options}>
+      {options.map((option, index) => <li key={option.value} id={`${id}-option-${index}`} role="option" aria-selected={value === option.value} data-active={active === index} onPointerMove={() => setActive(index)} onMouseDown={event => event.preventDefault()} onClick={() => choose(index)}>{option.label}</li>)}
+    </ul>}
+  </div>;
+}
 
 function Password({ confirm = false }: { confirm?: boolean }) {
   const [visible, setVisible] = useState(false);
@@ -19,32 +110,61 @@ function Password({ confirm = false }: { confirm?: boolean }) {
 }
 
 export default function Form() {
+  const [accountType, setAccountType] = useState<'CREATOR' | 'BRAND'>('CREATOR');
   const [message, setMessage] = useState('');
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (accountType === 'BRAND' && (!data.get('industry') || !data.get('countryCode'))) {
+      const missing = !data.get('industry') ? 'industry' : 'country';
+      setMessage(`Select ${missing}.`);
+      document.getElementById(missing)?.focus();
+      return;
+    }
     const confirm = form.elements.namedItem('confirm-password') as HTMLInputElement;
     if (data.get('password') !== data.get('confirm-password')) {
       confirm.setCustomValidity('Passwords do not match.');
       confirm.reportValidity();
       return;
     }
-    setMessage('Registration is not connected yet. Your information has not been sent or saved.');
+    setMessage('Registration is not available yet. No account was created.');
   }
   return (
-    <form className={styles.form} onSubmit={submit}>
-      <label className={styles.hidden} htmlFor="full-name">Full name</label>
-      <input id="full-name" name="fullName" autoComplete="name" placeholder="Full name" required maxLength={150} pattern=".*\S.*" aria-describedby="name-help" />
-      <small id="name-help">Use your full name as shown on your identity documents for later identity and payment verification.</small>
-      <label className={styles.hidden} htmlFor="username">Username</label>
-      <input id="username" name="username" autoComplete="username" placeholder="Social media username" required maxLength={100} pattern="@?[^\s@]+" aria-describedby="username-help" />
-      <small id="username-help"></small>
-      <label className={styles.hidden} htmlFor="email">Email address</label>
-      <input id="email" name="email" type="email" autoComplete="email" placeholder="Email address" required maxLength={254} />
+    <form className={styles.form} onSubmit={submit} onInput={event => {
+      setMessage('');
+      const confirmation = event.currentTarget.elements.namedItem('confirm-password') as HTMLInputElement | null;
+      confirmation?.setCustomValidity('');
+    }}>
+      <fieldset className={styles.accountTypes}>
+        <legend>Join Wenza as</legend>
+        {(['CREATOR', 'BRAND'] as const).map(type => <label key={type}>
+          <input type="radio" name="accountType" value={type} checked={accountType === type} onChange={() => { setAccountType(type); setMessage(''); }} />
+          <span>{type === 'CREATOR' ? 'Creator' : 'Brand / Company / Organisation'}</span>
+        </label>)}
+      </fieldset>
+      {accountType === 'BRAND' ? <>
+        <label htmlFor="brand-name">Brand / Company / Organisation name</label>
+        <input id="brand-name" name="brandName" autoComplete="organization" required maxLength={150} pattern=".*\S.*" />
+      </> : <>
+        <label htmlFor="full-name">Full name</label>
+        <input id="full-name" name="fullName" autoComplete="name" required maxLength={150} pattern=".*\S.*" />
+        <label htmlFor="username">Social media username</label>
+        <input id="username" name="username" autoComplete="username" required maxLength={100} pattern="@?[^\s@]+" />
+      </>}
+      <label htmlFor="email">Email address</label>
+      <input id="email" name="email" type="email" autoComplete="email" required maxLength={254} />
+      {accountType === 'BRAND' && <>
+        <label htmlFor="industry">Industry</label>
+        <Dropdown id="industry" name="industry" placeholder="Select industry" options={industries.map(industry => ({ value: industry, label: industry }))} />
+        <label htmlFor="country">Country</label>
+        <Dropdown id="country" name="countryCode" placeholder="Select country" options={countries.map(({ code, name }) => ({ value: code, label: name }))} />
+        <label htmlFor="website">Website (optional)</label>
+        <input id="website" name="website" type="url" autoComplete="url" placeholder="https://" maxLength={2048} pattern="https?://.*" />
+      </>}
       <Password />
       <Password confirm />
-      <small id="password-help">Use at least 8 characters.</small>
+      <small id="password-help">8 characters minimum</small>
       <button className={styles.submit} type="submit">Register</button>
       <p className={styles.caption}>Or sign up with</p>
       <div className={styles.providers}>

@@ -10,10 +10,9 @@
   --muted: #68805e;
   --border: #cae2bf;
 
-  /* Utility colors and existing compatibility alias. */
+  /* Utility colors. */
   --white: #fff;
   --black: #171c14;
-  --blue: var(--forest);
 }
 
 * { box-sizing: border-box; }

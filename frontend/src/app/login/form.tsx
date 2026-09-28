@@ -7,7 +7,7 @@ export default function LoginForm() {
   const [message, setMessage] = useState('');
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setMessage('Login is not connected yet. Your information has not been sent or saved.');
+    setMessage('Login is not available yet.');
   }
   return (
     <form className={styles.form} onSubmit={submit}>
