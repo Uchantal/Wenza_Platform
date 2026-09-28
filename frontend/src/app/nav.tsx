@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import styles from './nav.module.css';
 
@@ -46,11 +47,13 @@ export default function Nav() {
         <div className={styles.dropdown} ref={dropdown} onBlur={event => {
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpen(false);
         }}>
-          <div className={styles.signInGroup}>
-            <a className={styles.signIn} href="/login">Sign in</a>
-            <button ref={trigger} className={styles.dropdownToggle} type="button" aria-label="Sign in options" aria-expanded={open} aria-controls="sign-in-options" onClick={() => setOpen(value => !value)}><span aria-hidden="true">⌄</span></button>
+          <button ref={trigger} className={styles.signIn} type="button" aria-expanded={open} aria-controls="sign-in-options" onClick={() => setOpen(value => !value)}>
+            Sign in <span aria-hidden="true">⌄</span>
+          </button>
+          <div className={styles.dropdownPanel} id="sign-in-options" hidden={!open}>
+            <Link href="/register" onClick={() => setOpen(false)}>Register<small>Create a new account</small></Link>
+            <Link href="/login" onClick={() => setOpen(false)}>Login<small>Already have an account?</small></Link>
           </div>
-          {open && <div className={styles.dropdownPanel} id="sign-in-options"><a href="/login" onClick={() => setOpen(false)}>Login<small>Already have an account?</small></a></div>}
         </div>
       </div>
     </header>

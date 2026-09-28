@@ -19,11 +19,8 @@
 .join, .signIn { display: inline-flex; align-items: center; justify-content: center; height: calc(49 * var(--nav-u)); min-height: 36px; padding: calc(12 * var(--nav-u)) calc(20 * var(--nav-u)); border: 1px solid transparent; border-radius: 100px; color: var(--forest); font: 500 calc(20 * var(--nav-u))/1.15 var(--font-display); text-decoration: none; text-transform: uppercase; white-space: nowrap; }
 .join { width: calc(195 * var(--nav-u)); background: var(--lime); }
 .join:hover { filter: brightness(.96); }
-.signInGroup { display: flex; align-items: stretch; min-width: calc(130 * var(--nav-u)); border: 1px solid var(--border); border-radius: 100px; }
-.signIn { flex: 1; background: transparent; border: 0; padding-right: 4px; }
-.signIn:hover, .dropdownToggle:hover { background: var(--border); }
-.dropdownToggle { display: grid; place-items: center; min-width: 32px; padding: 0 10px 0 6px; border: 0; border-radius: 100px; background: transparent; color: var(--forest); font: inherit; cursor: pointer; }
-.dropdownToggle[aria-expanded='true'] { background: var(--border); }
+.signIn { gap: 8px; min-width: calc(130 * var(--nav-u)); background: transparent; border-color: var(--border); cursor: pointer; }
+.signIn:hover, .signIn[aria-expanded='true'] { background: var(--border); }
 .dropdown { position: relative; }
 .dropdownPanel { position: absolute; top: calc(100% + 10px); right: 0; width: 210px; padding: 8px; border-radius: 16px; background: var(--white); box-shadow: 0 8px 28px rgb(18 56 2 / 14%); }
 .dropdownPanel a { display: block; padding: 12px; border-radius: 10px; color: var(--forest); font-size: 18px; font-weight: 600; text-decoration: none; }
@@ -38,14 +35,11 @@
   .actions { grid-column: 2; grid-row: 1; gap: 8px; }
   .join, .signIn { width: auto; height: 38px; min-height: 38px; font-size: 13px; padding: 8px 14px; }
   .join { min-width: 112px; }
-  .signIn { min-width: 0; padding-right: 4px; }
-  .signInGroup { min-width: 98px; }
+  .signIn { min-width: 98px; }
 }
 @media (max-width: 360px) {
   .header { column-gap: 8px; }
   .logo { font-size: 28px; }
   .actions { gap: 6px; }
   .join, .signIn { padding-inline: 10px; min-width: 0; font-size: 12px; }
-  .signIn { padding-right: 2px; }
-  .signInGroup { min-width: 0; }
 }
