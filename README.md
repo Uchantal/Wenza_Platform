@@ -9,9 +9,8 @@ This repository implements the **project foundation**, based on `Wenza_StartUp_i
 ```text
 frontend/              Next.js + React web application
 backend/               NestJS modular monolith; REST API
-  src/modules/         Business areas and health endpoint
-  src/integrations/    External provider boundaries
-  src/jobs/            Background processing plan
+  src/                 API entry point and application module
+    modules/health/    Health endpoint
   database/            Prisma schema, client generation and migrations
 docs/
   architecture/        Architecture decisions and original diagram

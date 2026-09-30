@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './nav.module.css';
 
 const links = [
-  { href: '/#creators', label: 'Creators' },
+  { href: '/brand/creators', label: 'Creators' },
   { href: '/#brands', label: 'Brands' },
   { href: '/#opportunities', label: 'Opportunities' },
 ];
